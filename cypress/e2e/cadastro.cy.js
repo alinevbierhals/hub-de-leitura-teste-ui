@@ -1,40 +1,56 @@
-
 import { faker } from '@faker-js/faker';
 
-describe('Funcionslidade cadastro no Hub de leitura', () => {
+describe('Funcionalidade cadastro no Hub de leitura', () => {
 
     beforeEach(() => {
-        cy.visit('register.html')
+        cy.visit('http://localhost:3000/register.html')
     });
 
     it('Deve fazer cadastro com sucesso usando função JS', () => {
-        let Email = `aline${Date.now()}@example.com`
-        cy.get('[href="/register.html"]').click()
-        cy.get('#name').type('Aline Vieira Souza Bierhals')
-        cy.get('#email').type(Email)
+        let email = `aline${Date.now()}@example.com`
+
+        cy.get('#name').type('Aline Vieira')
+        cy.get('#email').type(email)
         cy.get('#phone').type('(48) 99102-1014')
         cy.get('#password').type('Teste123@')
         cy.get('#confirm-password').type('Teste123@')
         cy.get('#terms-agreement').check()
         cy.get('#register-btn').click()
+
         cy.url().should('include', 'dashboard')
-
-    })
-
-    it.only('Deve fazer cadastro com sucesso usando faker', () => {
-        let Nome = faker.person.fullName()
-        let Email = faker.internet.email()
-    cy.get('[href="/register.html"]').click()
-    cy.get('#name').type(Nome)
-    cy.get('#email').type(Email)
-    cy.get('#phone').type('(48) 99102-1014')
-    cy.get('#password').type('Teste123@')
-    cy.get('#confirm-password').type('Teste123@')
-    cy.get('#terms-agreement').check()
-    cy.get('#register-btn').click()
-    cy.url().should('include', 'dashboard')
-    cy.get('#user-name').should('contain', Nome)
-    
-})
-
     });
+
+    it('Deve fazer cadastro com sucesso usando faker', () => {
+        let nome = faker.person.fullName()
+        let email = faker.internet.email().toLowerCase()
+
+        cy.get('#name').type(nome)
+        cy.get('#email').type(email)
+        cy.get('#phone').type('(48) 99102-1014')
+        cy.get('#password').type('Teste123@')
+        cy.get('#confirm-password').type('Teste123@')
+        cy.get('#terms-agreement').check()
+        cy.get('#register-btn').click()
+
+        cy.url().should('include', 'dashboard')
+        cy.get('#user-name').should('be.visible').and('contain', nome)
+    });
+
+    it('Deve fazer cadastro com sucesso usando comando customizado', () => {
+        let email = `aline${Date.now()}@example.com`
+
+        cy.preencherCadastro(
+            'Aline Vieira Souza Bierhals',
+            email,
+            '(48) 99102-1014',
+            'Teste123@',
+            'Teste123@'
+        )
+
+        cy.url().should('include', 'dashboard')
+        cy.get('#user-name')
+          .should('be.visible')
+          .and('contain', 'Aline Vieira Souza Bierhals')
+    });
+
+});
