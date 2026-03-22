@@ -6,5 +6,9 @@
   {
     "livro": "Dom Quixote",
     "categoria": "Romance"
+  },
+  {
+    "livro": "O hobbit",
+    "categoria": "Aventura"
   }
 ]
