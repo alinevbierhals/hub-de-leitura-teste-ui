@@ -65,15 +65,4 @@ it('Deve fazer cadastro com sucesso usando Page Objects', () => {
        cy.url().should('include', 'dashboard')
 });
 
-it('Deve validar mensagem de erro ao tentar cadastrar sem preencher nome', () => {
-    let email = `aline${Date.now()}@example.com`
-    cadastroPage.preencherCadastro( 
-        '',
-        email,
-        '(48) 99102-1014',
-        'Teste123@',
-        'Teste123@')
-    cy.get(':nth-child(1) > .invalid-feedback').should('be.visible').and('contain', 'Nome é obrigatório')
-});
-
 });

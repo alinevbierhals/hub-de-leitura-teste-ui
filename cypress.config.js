@@ -7,6 +7,8 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: "http://localhost:3000/index.html"
+    baseUrl: "http://localhost:3000/index.html",
+    projectId: "b4vk78",
+    video: true,
   },
 });
