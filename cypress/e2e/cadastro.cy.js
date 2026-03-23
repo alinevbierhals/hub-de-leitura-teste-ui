@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
+import cadastroPage from '../support/pages/cadastro-page';
 
 describe('Funcionalidade cadastro no Hub de leitura', () => {
 
-    beforeEach(() => {
-        cy.visit('http://localhost:3000/register.html')
-    });
+  beforeEach(() => {
+    cadastroPage.visitarPaginaCadastro()
+});
 
     it('Deve fazer cadastro com sucesso usando função JS', () => {
         let email = `aline${Date.now()}@example.com`
@@ -52,5 +53,27 @@ describe('Funcionalidade cadastro no Hub de leitura', () => {
           .should('be.visible')
           .and('contain', 'Aline Vieira Souza Bierhals')
     });
+
+it('Deve fazer cadastro com sucesso usando Page Objects', () => {
+    let email = `aline${Date.now()}@example.com`
+    cadastroPage.preencherCadastro( 
+        'Aline Vieira Souza Bierhals',
+        email,
+        '(48) 99102-1014',
+        'Teste123@',
+        'Teste123@')
+       cy.url().should('include', 'dashboard')
+});
+
+it('Deve validar mensagem de erro ao tentar cadastrar sem preencher nome', () => {
+    let email = `aline${Date.now()}@example.com`
+    cadastroPage.preencherCadastro( 
+        '',
+        email,
+        '(48) 99102-1014',
+        'Teste123@',
+        'Teste123@')
+    cy.get(':nth-child(1) > .invalid-feedback').should('be.visible').and('contain', 'Nome é obrigatório')
+});
 
 });
